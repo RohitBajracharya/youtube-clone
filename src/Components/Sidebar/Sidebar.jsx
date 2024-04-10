@@ -13,9 +13,13 @@ import simon from "../../assets/simon.png";
 import sports from "../../assets/sports.png";
 import tech from "../../assets/tech.png";
 import tom from "../../assets/tom.png";
+import { useCategory } from "../../context/CategoryContext";
+import { useSideBar } from "../../context/SidebarContext";
 import "./Sidebar.css";
 
-const Sidebar = ({ sidebar, category,setCategory }) => {
+const Sidebar = () => {
+  const { sidebar } = useSideBar();
+  const { category, setCategory } = useCategory();
   return (
     <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
       <div className="shortcut-links">

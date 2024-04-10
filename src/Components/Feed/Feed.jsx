@@ -1,10 +1,12 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useCategory } from "../../context/CategoryContext";
 import { API_KEY, value_converter } from "../../data";
 import "./Feed.css";
 
-function Feed({ category }) {
+function Feed() {
+  const { category } = useCategory();
   const [data, setData] = useState([]);
 
   const fetchData = async () => {

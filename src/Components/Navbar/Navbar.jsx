@@ -7,9 +7,11 @@ import more_icon from "../../assets/more.png";
 import notification_icon from "../../assets/notification.png";
 import search_icon from "../../assets/search.png";
 import upload_icon from "../../assets/upload.png";
+import { useSideBar } from "../../context/SidebarContext";
 import "./Navbar.css";
 
-const Navbar = ({ setSidebar }) => {
+const Navbar = () => {
+  const { setSidebar } = useSideBar();
   return (
     <nav className="flex-div">
       <div className="nav-left flex-div">
