@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import profile_icon from "../../assets/jack.png";
 import logo from "../../assets/logo.png";
 import menu_icon from "../../assets/menu.png";
@@ -18,7 +19,9 @@ const Navbar = ({ setSidebar }) => {
           alt=""
           onClick={() => setSidebar((prev) => !prev)}
         />
-        <img className="logo" src={logo} alt="" />
+        <Link to="/">
+          <img className="logo" src={logo} alt="" />
+        </Link>
       </div>
       <div className="nav-middle flex-div">
         <div className="search-box flex-div">

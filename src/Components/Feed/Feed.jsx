@@ -1,146 +1,45 @@
-import React from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import thumbail1 from "../../assets/thumbnail1.png";
-import thumbail2 from "../../assets/thumbnail2.png";
-import thumbail3 from "../../assets/thumbnail3.png";
-import thumbail4 from "../../assets/thumbnail4.png";
-import thumbail5 from "../../assets/thumbnail5.png";
-import thumbail6 from "../../assets/thumbnail6.png";
-import thumbail7 from "../../assets/thumbnail7.png";
-import thumbail8 from "../../assets/thumbnail8.png";
+import { API_KEY, value_converter } from "../../data";
 import "./Feed.css";
 
-function Feed() {
+function Feed({ category }) {
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=IN&videoCategoryId=${category}&key=${API_KEY}`;
+    await fetch(videoList_url)
+      .then((response) => response.json())
+      .then((data) => setData(data.items))
+      .catch((error) => console.error("Error fetching data:", error));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [category]);
+
   return (
     <div className="feed">
-      <Link to={`video/20/4521`} className="card">
-        <img src={thumbail1} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </Link>
-      <div className="card">
-        <img src={thumbail2} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail3} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail4} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail5} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail6} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail7} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail8} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail1} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail2} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail3} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail4} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail5} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail6} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail7} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
-      <div className="card">
-        <img src={thumbail8} alt="" />
-        <h2>
-          Best channel to learn coding that help you to be a web developer
-        </h2>
-        <h3>Tour Guy</h3>
-        <p>15k views &bull; 2days ago</p>
-      </div>
+      {data.length > 0 ? (
+        data.map((item, index) => (
+          <Link
+            to={`video/${item.snippet.categoryId}/${item.id}`}
+            className="card"
+            key={index}
+          >
+            <img src={item.snippet.thumbnails.medium.url} alt="" />
+            <h2>{item.snippet.title}</h2>
+            <h3>{item.snippet.channelTitle}</h3>
+            <p>
+              {value_converter(item.statistics.viewCount)} views &bull;{" "}
+              {moment(item.snippet.publishedAt).fromNow()}
+            </p>
+          </Link>
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
